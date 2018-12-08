@@ -1,0 +1,24 @@
+{
+  "name": "transducers",
+  "version": "1.0.0",
+  "description": "A detailed implementation for transducers in javascript",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node src/index.js",
+    "prebuild": "babel src -d dist",
+    "build": "node dist/index.js",
+    "prettier": "prettier --write src/**/*.js"
+  },
+  "keywords": [
+    "javascript",
+    "transducers"
+  ],
+  "author": "Adeel Imran",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-preset-env": "1.7.0",
+    "nodemon": "1.18.7",
+    "prettier": "1.15.3"
+  }
+}

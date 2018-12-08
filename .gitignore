@@ -1,0 +1,8 @@
+# dependencies
+node_modules
+# error log
+yarn-error.log
+# lock file
+yarn.lock
+# Bundled output
+dist
