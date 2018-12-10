@@ -86,3 +86,42 @@ const filterWithReduce2 = func => {
 
 const filterWithReduceResult2 = nums.reduce(filterWithReduce2(isEven), []);
 // console.log('filterWithReduceResult2 ', filterWithReduceResult2);
+
+// commonality between these 2 functions map/filter above is 'concat'
+// used for 'combining' or 'reducing' two things into one.
+
+// generalizing the 'mapping' concept, without the concat
+const mapping = func => {
+  // this takes in 2 things and makes them 1
+  return returnFunction => {
+    return (acc, cv) => {
+      return returnFunction(acc, func(cv)); // <= returnFunction replaces 'concat'
+    };
+  };
+};
+
+const mapWithRef = mapping(add1);
+const mappingResult = nums.reduce(mapWithRef(concat), []);
+
+console.log('mappingResult ', mappingResult);
+
+// generalizing the 'filtering' concept, without the concat
+const filtering = func => {
+  // this takes in 2 things and makes them 1
+  return returnFunction => {
+    return (acc, cv) => {
+      return func(cv) ? returnFunction(acc, cv) : acc; // <= returnFunction replaces 'concat'
+    };
+  };
+};
+
+const filterWithRef = filtering(isEven);
+const filteringResult = nums.reduce(filterWithRef(concat), []);
+
+console.log('filteringResult ', filteringResult);
+
+// returnFunction takes in 2 things & returns it into 1
+// ??
+
+// continue from 
+// https://www.youtube.com/watch?v=SJjOp0X_MVA 19:06 mins
