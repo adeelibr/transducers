@@ -103,7 +103,7 @@ const mapping = func => {
 const mapWithRef = mapping(add1);
 const mappingResult = nums.reduce(mapWithRef(concat), []);
 
-console.log('mappingResult ', mappingResult);
+// console.log('mappingResult ', mappingResult);
 
 // generalizing the 'filtering' concept, without the concat
 const filtering = func => {
@@ -118,10 +118,69 @@ const filtering = func => {
 const filterWithRef = filtering(isEven);
 const filteringResult = nums.reduce(filterWithRef(concat), []);
 
-console.log('filteringResult ', filteringResult);
+// console.log('filteringResult ', filteringResult);
 
 // returnFunction takes in 2 things & returns it into 1
-// ??
+// mapping(fn) returns a function expecting an rf
+// filtering(fn) returns a function expecting an rf
+// mapping(fn)(rf) returns an rf
+// filtering(fn)(rf) returns an rf
 
-// continue from 
-// https://www.youtube.com/watch?v=SJjOp0X_MVA 19:06 mins
+// so.. mapping(fn) can recieve as its rf, the returned rf from filtering(p)(rf)
+// and vice versa
+
+// these are transducers
+// they expect an rf and return an rf
+// allowing them to be composed together
+
+// this was the goal
+// const transformFilterReduce2 = compose(
+//  map(add1), 
+//  filter(isEven). 
+//  reduce(add)
+// );
+
+const transformFilterReduce2 = compose(mapping(add1), filtering(isEven));
+const transformFilterReduceResult1 = nums.reduce(
+  transformFilterReduce2(concat),
+  [],
+);
+
+// notice output is [2,4,6,8,10], meaning filtering was applied second
+// console.log(transformFilterReduceResult1)
+
+const transformFilterReduceResult2 = nums.reduce(
+  transformFilterReduce2(add),
+  0,
+);
+
+// console.log(transformFilterReduceResult2);
+
+// transduce you'll see in a library...
+function transduce(xf, rf, init, xs) {
+  // call reduce on the data structure internally (abstract it only)
+  // pass the rf to the composed transformation
+  // pass in the initial value
+  return xs.reduce(xf(rf), init);
+}
+
+const transduceResult1 = transduce(transformFilterReduce2, add, 0, nums);
+
+// console.log('transduceResult1', transduceResult1);
+
+// another example, returns an array
+const xForm = compose(
+  // reminders: these are all transducers
+  // compositions of transducers to return a new transducers
+  mapping(add1),
+  filtering(isEven),
+  mapping(doubleIt),
+  mapping(add1),
+);
+
+const transduceResult2 = transduce(xForm, concat, [], nums);
+
+// console.log('transduceResult2', transduceResult2);
+
+// Continue from 
+// https://www.youtube.com/watch?v=SJjOp0X_MVA 30:06 mins
